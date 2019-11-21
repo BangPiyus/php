@@ -1,0 +1,2 @@
+# php
+semua script php
