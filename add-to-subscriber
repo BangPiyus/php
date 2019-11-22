@@ -1,0 +1,114 @@
+<?php
+  $db_host = "localhost";
+  $db_user = "root";
+  $db_pass = "";
+  $db_name = "bangpiyus";
+  $koneksi = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+  if(mysqli_connect_errno()){
+      echo 'ada error : '.mysqli_connect_error();
+    header("location:https://bangpiyus.com");
+  }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Trial WABOMBER</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h2>Silahkan Isi data anda dibawah</h2>
+
+  <?php
+    if(isset($_POST['submit'])){
+        $nama = mysqli_escape_string($koneksi,$_POST['nama']);
+        $email = mysqli_escape_string($koneksi,$_POST['email']);
+
+        $wa = mysqli_escape_string($koneksi,$_POST['wa']);
+
+        $cek_wa = substr($wa, 1);
+
+        $wa = '62'.$cek_wa;
+
+        $produk = mysqli_escape_string($koneksi,$_POST['produk']);
+
+
+        $url = "https://api.kirim.email/v3/subscriber";
+
+        $time = time();
+        $username = 'xxxx';
+        $apikey = 'xxxxxxxxx';
+        $generated_token = hash_hmac("sha256",$username."::".$apikey."::".$time,$apikey);
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => false,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_POSTFIELDS => "lists=70557&full_name=".$nama."&email=".$email."&no_telpon=".$wa."&Produk%20anda=".$produk."",
+          CURLOPT_HTTPHEADER => array(
+            "Auth-Id: ".$username."",
+            "Auth-Token: ".$generated_token."",
+            "Timestamp: ".$time."",
+            "Content-Type: application/x-www-form-urlencoded"
+          ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+          echo "cURL Error #:" . $err;
+        } else {
+          //header('Content-Type: application/json');  
+          //echo $response;
+        } 
+
+        $simpan = $koneksi->query(" INSERT INTO pelanggan (pelanggan_nama,pelanggan_email,pelanggan_wa,pelanggan_produk) VALUES ('$nama','$email','$wa','$produk') ");
+  ?>
+  <h4>Ok. Silahkan PELAJARI TUTORIAL dan DOWNLOAD SOFTWARENYA disini</h4>
+  <br>
+  <a href="https://bit.ly/tutorialwabomber" class="btn btn-success btn-lg">Download</a>
+  <?php
+    }else{
+  ?>
+  <form method="post">
+    <div class="form-group">
+      <label for="email">Nama Anda:</label>
+      <input type="text" class="form-control" name="nama" placeholder="nama anda?" >
+    </div>
+    <div class="form-group">
+      <label for="email">Email Anda:</label>
+      <input type="email" class="form-control" name="email" placeholder="email anda?" >
+    </div>
+    <div class="form-group">
+      <label for="email">WA Anda:</label>
+      <input type="text" class="form-control" name="wa" placeholder="wa anda?" >
+    </div>
+    <div class="form-group">
+      <label for="email">Produk Anda:</label>
+      <input type="text" class="form-control" name="produk" placeholder="produk/jasa anda apa?" >
+    </div>
+    <button type="submit" class="btn btn-success" name="submit">OK. Minta Trialnya</button>
+  </form>
+  <?php
+    }
+  ?>
+</div>
+
+</body>
+</html>
