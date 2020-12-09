@@ -1,0 +1,2 @@
+$sekarang = date('Y-m-d');
+$tanggal_terpilih = date('Y-m-d', strtotime($sekarang. ' + '.$x.' days'));
