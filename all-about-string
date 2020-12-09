@@ -1,0 +1,26 @@
+<?php
+	//hanya angka dan tulisan
+	$string = "Suka*()bumi #$^%& Kode ($%^2&^)*(0&*^19.";
+	$string = '        ';
+	$result = preg_replace("/[^a-zA-Z0-9]/", "", $string);
+	echo "angka dan huruf".$result;
+	echo "<br>";
+
+	//angka, tulisan dan spasi
+	$res = preg_replace("/[^a-zA-Z0-9\s]/", "", $string);
+	echo "angka-huruf-spasi :".$res;
+
+
+	//ambil karakter bila panjangnya minimal xx
+	$string = 'the quick brow fox jumps over the lazy dog the quick brow fox jumps over the lazy dog ';
+	$string = 'the quick brow fox jumps over the lazy dog the quick brow fox jumps over the lazy dog ';
+	$teksbaru = strlen($string) > 50 ? substr($string,0,50)."..." : $string;
+	echo "teks baru :".$teksbaru;
+
+	$foto = $_FILES['foto']['name'];
+    $lokasi = $_FILES['foto']['tmp_name'];
+    $path = pathinfo($foto,PATHINFO_EXTENSION);
+
+    $namafilefoto = strlen($slug) > 50 ? substr($string,0,50).".".$paht : $string.$path;
+    move_uploaded_file($lokasi, "../images/$namafilefoto");
+?>
