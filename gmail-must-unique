@@ -1,0 +1,7 @@
+$email = trim(mysqli_escape_string($koneksi,$_POST['email']));
+      
+$email_sub = substr($email, -9);
+  if($email_sub=='gmail.com'){
+    $email_user = substr($email, 0,-9);
+    $email = strtolower(preg_replace("/[^a-zA-Z0-9]/", "", $email_user).'@'.$email_sub);
+  };
