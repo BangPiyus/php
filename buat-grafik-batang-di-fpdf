@@ -1,0 +1,135 @@
+//BUAT GRAFIK IKUTI TUTORIAL : https://www.youtube.com/watch?v=WOZyvrpuA5s
+                
+                //Posisi
+                $chartX = $pdf->GetX();
+                $chartY = $pdf->GetY();
+                
+                // $pdf->Cell(0,$tinggi,'posisi '.$chartX.'|'.$chartY,0,1);
+                
+                
+                //Dimensi
+                $chartWidth = 170;
+                $chartHeight = 70;
+                
+                //Padding
+                $chartTopPadding = 10;
+                $chartLeftPadding = 20;
+                $chartRightPadding = 20;
+                $chartBottomPadding = 5;
+                
+                //ChartBox
+                $chartBoxX = $chartX+$chartLeftPadding;
+                $chartBoxY = $chartY+$chartTopPadding;
+                $chartBoxWidth = $chartWidth-$chartLeftPadding-$chartRightPadding;
+                $chartBoxHeight = $chartHeight-$chartTopPadding-$chartBottomPadding;
+                
+                //barWidth 
+                $barWidth = 20;
+                
+                
+                $chartData = Array(
+                        'Jan-Mar'=>[
+                                'color'=>[255,0,0],
+                                'value'=>10
+                            ],
+                        'Apr-Jun'=>[
+                                'color'=>[255,255,0],
+                                'value'=>8
+                            ],
+                        'Jul-Sep'=>[
+                                'color'=>[255,0,0],
+                                'value'=>3
+                            ],
+                        'Okt-Des'=>[
+                                'color'=>[255,0,255],
+                                'value'=>4
+                            ],
+                        
+                    );
+                
+                //data tertinggi
+                $dataMax = 0;
+                foreach($chartData as $item){
+                    if($item['value']>$dataMax) $dataMax=$item['value'];
+                }
+                
+                //data step
+                $dataStep = 2;
+                
+                //set font, line width, and color
+                $pdf->SetFont('Arial','',9);
+                $pdf->SetLineWidth(0.2);
+                $pdf->SetDrawColor(0);
+                
+                
+                //chart boundary
+                $pdf->Rect($chartX,$chartY,$chartWidth,$chartHeight);
+                
+                //vertikal axis line (garis sumbu y)
+                $pdf->Line(
+                    $chartBoxX,
+                    $chartBoxY,
+                    $chartBoxX,
+                    $chartBoxY+$chartBoxHeight
+                );
+                
+                //horizontal axis line (garis sumbu x)
+                $pdf->Line(
+                    $chartBoxX-2,
+                    $chartBoxY+$chartBoxHeight,
+                    $chartBoxX+$chartBoxWidth,
+                    $chartBoxY+$chartBoxHeight
+                );
+                
+                //vertikal axis
+                //hitung y axis scale unit
+                $yAxisUnits = $chartBoxHeight / $dataMax;
+                
+                //gambar y axis label
+                for ($i=0 ; $i<=$dataMax ; $i+=$dataStep){
+                    //posisi y
+                    $yAxisPos = $chartBoxY + ($yAxisUnits * $i);
+                    //gambar point y
+                    $pdf->Line(
+                        $chartBoxX-2,
+                        $yAxisPos,
+                        $chartBoxX,
+                        $yAxisPos
+                    );
+                    //set cell position for y axis labels
+                    $pdf->SetXY($chartBoxX - $chartLeftPadding , $yAxisPos-2);
+                    //write labels
+                    $pdf->Cell($chartLeftPadding-4,5,$dataMax-$i,0,0,'R');
+                }
+                
+                //horizontal axis
+                //set cell position
+                $pdf->SetXY($chartBoxX,($chartBoxY+$chartBoxHeight));
+                
+                //cell width
+                $xLabelWidth=$chartBoxWidth / count($chartData);
+                
+                //loop horizontal axis and draw bar
+                $barXPos = 0;
+                foreach($chartData as $itemName=>$item){
+                    //cetak label
+                    $pdf->Cell($xLabelWidth,5,$itemName,0,0,'C');
+                
+                    //draw bar
+                    //bar color
+                    $pdf->SetFillColor($item['color'][0],$item['color'][1],$item['color'][2]);
+                    //bar height
+                    $barHeight=$yAxisUnits * $item['value'];
+                    //bar x position
+                    $barX = ($xLabelWidth/2) + ($xLabelWidth*$barXPos);
+                    $barX = $barX - ($barWidth/2);
+                    $barX = $barX + $chartBoxX;
+                    //bar y position
+                    $barY = $chartBoxHeight-$barHeight;
+                    $barY = $barY+$chartBoxY;
+                    //draw bar
+                    $pdf->Rect($barX,$barY,$barWidth,$barHeight,'DF');
+                    
+                    //increamten $barXPos
+                    $barXPos++;
+                }
