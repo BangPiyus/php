@@ -1,0 +1,128 @@
+	function cek_ip(){
+    	 //whether ip is from share internet
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))   
+        {
+        	$ip_address = $_SERVER['HTTP_CLIENT_IP'];
+        	
+        }
+        
+        //whether ip is from proxy
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))  
+        {
+        	$ip_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+            //whether ip is from remote address
+        else
+        {
+        	$ip_address = $_SERVER['REMOTE_ADDR'];
+        }   
+        
+        return $ip_address;
+	}
+	
+	function cek_browser(){
+        if(strpos($_SERVER['HTTP_USER_AGENT'], 'Netscape')) {
+        	$browser = 'Netscape';
+        }
+        else if (strpos($_SERVER['HTTP_USER_AGENT'], 'Firefox')) {
+        	$browser = 'Mozilla Firefox';
+        }
+        else if (strpos($_SERVER['HTTP_USER_AGENT'], 'Chrome')) {
+        	$browser = 'Google Chrome';
+        }
+        else if (strpos($_SERVER['HTTP_USER_AGENT'], 'Opera')) {
+        	$browser = 'Opera';
+        }
+        else if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE')) {
+        	$browser = 'Internet Explorer';
+        }
+        else {
+        	$browser = 'Lainnya';
+        } 
+        
+        return $browser;
+	}
+	
+	function cek_perangkat(){
+        $deteksi_perangkat = preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+        if($deteksi_perangkat) {
+        	$perangkat = "hp";
+        }
+        else {
+        	$perangkat = "pc";
+        }
+        
+        return $perangkat;
+	}
+	
+	
+	function cek_link(){
+	    $actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	    return $actual_link;
+	}
+	
+	function ada_ip($periksa){
+	    global $koneksi;
+	    $cek= mysqli_escape_string($koneksi,$ip);
+	    $ambil = $koneksi->query(" SELECT * FROM ip WHERE ip_address='$cek' ");
+	    $ada = $ambil->num_rows;
+	    if($ada<1){
+	        $simpan = $koneksi->query("  INSERT INTO ip (ip_address) VALUES ('$cek') ");
+	        $id = $simpan->insert_id;
+	    }else{
+	        $data = $ambil->fetch_assoc();
+	        $id = $data['ip_id'];
+	    }
+	    return $id;
+	}
+	
+	
+	function ada_sumber($periksa){
+	    global $koneksi;
+	    $cek= mysqli_escape_string($koneksi,$periksa);
+	    $ambil = $koneksi->query(" SELECT * FROM sumber WHERE sumber_nama='$cek' ");
+	    $ada = $ambil->num_rows;
+	    if($ada<1){
+	        $simpan = $koneksi->query("  INSERT INTO sumber (sumber_nama) VALUES ('$cek') ");
+	        $id = $simpan->insert_id;
+	    }else{
+	        $data = $ambil->fetch_assoc();
+	        $id = $data['sumber_id'];
+	    }
+	    
+	    return $id;
+	}
+	
+	
+	function ada_ide($periksa){
+	    global $koneksi;
+	    $cek= mysqli_escape_string($koneksi,$periksa);
+	    $ambil = $koneksi->query(" SELECT * FROM ide WHERE ide_nama='$cek' ");
+	    $ada = $ambil->num_rows;
+	    if($ada<1){
+	        $simpan = $koneksi->query("  INSERT INTO ide (ide_nama) VALUES ('$cek') ");
+	        $id = $simpan->insert_id;
+	    }else{
+	        $data = $ambil->fetch_assoc();
+	        $id = $data['ide_id'];
+	    }
+	    
+	    return $id;
+	}
+	
+	function ada_link($periksa){
+	    global $koneksi;
+	    $cek= mysqli_escape_string($koneksi,$periksa);
+	    $ambil = $koneksi->query(" SELECT * FROM link WHERE link_nama='$cek' ");
+	    $ada = $ambil->num_rows;
+	    if($ada<1){
+	        $simpan = $koneksi->query("  INSERT INTO link (link_nama) VALUES ('$cek') ");
+	        $id = $simpan->insert_id;
+	    }else{
+	        $data = $ambil->fetch_assoc();
+	        $id = $data['link_id'];
+	    }
+	    
+	    return $id;
+	}
+	
