@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>Tanggal Kelipatan Hari</title>
+    </head>
+    <body>
+        
+        
+        <!--cara benar membuat tanggal kelipatan hari-->
+        <?php
+            if(isset($_POST['proses'])){
+                $tanggal = $_POST['tanggal'];
+                $hari = $_POST['hari'];
+                $kali = $_POST['kali'];
+                
+                for ($i=0;$i<$kali;$i++){
+                    $j = $hari*$i;
+                    $tanggal_pilihan = date($tanggal);
+                    $tanggal_baru = date( "Y-m-d", strtotime( "$tanggal_pilihan +$j day" ) );
+                    print_r ($tanggal_baru);
+                    echo "<br>";
+                }
+            }
+        ?>
+        <form method="post">
+            <p>Tanggal</p>
+            <input type="date" name="tanggal">
+            <br><br>
+            
+            <p>Hari Ulang</p>
+            <input type="number" name="hari" value="7">
+            <br><br>
+            
+            <p>Kali Ulang</p>
+            <input type="number" name="kali" value="4">
+            <br><br>
+            
+            <input type="submit" name="proses">
+        </form>
+        <!--cara benar membuat tanggal kelipatan hari-->
+    </body>
+</html>
