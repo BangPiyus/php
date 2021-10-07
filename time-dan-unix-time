@@ -1,0 +1,6 @@
+$date = new DateTime();
+$value = 1426023505154;
+$value2 = round($value/1000);
+//$date->setTimestamp($value2);
+
+echo date('Y-m-d H:i:s',$value2);
