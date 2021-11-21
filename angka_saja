@@ -1,0 +1,4 @@
+function angkasaja($data){
+	    $hasil = preg_replace('/\D/', '', $data);
+	    return $hasil;
+	}
