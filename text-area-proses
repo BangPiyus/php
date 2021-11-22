@@ -1,0 +1,2 @@
+// $pecah = explode("\n", str_replace("\r", "", $pesan));
+            $pecah = str_replace("\r", "", $pesan);
