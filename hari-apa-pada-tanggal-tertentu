@@ -9,6 +9,7 @@
 
 
 	for($i=$tanggal_awal;$i<=$tanggal_akhir;$i++){
+		
 		if($i<10){
 			$y='0'.$i;
 		}else{
@@ -21,9 +22,13 @@
 			$bulan_y = $bulan;
 		}
 
-		$tanggal = $y.'/'.$bulan_y.'/'.$tahun;
-		$hasil = date('l', strtotime($tanggal));
+		$tanggal = $tahun.'/'.$bulan_y.'/'.$y;
+		$hari = date('l', strtotime($tanggal));
 
-		echo $y.'-'.$bulan_y.'-'.$tahun." adalah hari ".$hasil."<br>";
+		echo $y.'-'.$bulan_y.'-'.$tahun." adalah hari ".$hari."<br>";	
+		
+		// if($hari==='Saturday'){
+		// 	echo $y.'-'.$bulan_y.'-'.$tahun." adalah hari ".$hari."<br>";	
+		// }		
 	}
 ?>
