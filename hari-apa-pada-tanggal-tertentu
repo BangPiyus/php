@@ -1,0 +1,29 @@
+<?php
+
+	echo "tes menampilkan hari apa pada tanggal tertentu"."<br>";
+	echo date("l") . "<br>";
+	$tanggal_awal = 1;
+	$tanggal_akhir = 31;
+	$bulan = 1;
+	$tahun = 2022;
+
+
+	for($i=$tanggal_awal;$i<=$tanggal_akhir;$i++){
+		if($i<10){
+			$y='0'.$i;
+		}else{
+			$y=$i;
+		}
+
+		if($bulan<10){
+			$bulan_y = '0'.$bulan;
+		}else{
+			$bulan_y = $bulan;
+		}
+
+		$tanggal = $y.'/'.$bulan_y.'/'.$tahun;
+		$hasil = date('l', strtotime($tanggal));
+
+		echo $y.'-'.$bulan_y.'-'.$tahun." adalah hari ".$hasil."<br>";
+	}
+?>
