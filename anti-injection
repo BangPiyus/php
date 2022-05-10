@@ -1,0 +1,5 @@
+//sql injection
+function anti_injection($string) {
+	$data = stripslashes(strip_tags(htmlentities(htmlspecialchars($string, ENT_QUOTES))));
+	return $data;
+}
