@@ -1,0 +1,5 @@
+$allVariables = get_defined_vars();
+echo "<pre>";
+print_r($allVariables);
+echo "</pre>";
+                                                
