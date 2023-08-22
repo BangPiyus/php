@@ -1,0 +1,43 @@
+$jamrange = "9,10,11,12,13,14,15,16,17,18";
+	$jamrange_array = explode(',',$jamrange);
+	echo 'Jam Kerja : '.$jamrange;
+	echo "<br>";
+	$jamaktif = 0;
+	if($jamaktif<>1){
+	    echo "Jam Kerja? TIDAK AKTIF"."<br>";
+	}else{
+	    echo "Jam Kerja? AKTIF"."<br>";
+	    $jam_sekarang = date('H');
+	    var_dump($jam_sekarang);
+	    echo "<br>";
+	    switch($jam_sekarang){
+	        case '00':
+	            $jam_sekarang_2 = 0;
+	            break;
+	        case '01':
+	        case '02':
+	        case '03':
+	        case '04':
+	        case '05':
+	        case '06':
+	        case '07':
+	        case '08':
+	        case '09':
+	            $jam_sekarang_2 = substr($jam_sekarang,1,1);
+	            $jam_sekarang_2 = (int)$jam_sekarang_2;
+	            break;
+	        default:
+	            $jam_sekarang_2 = (int)$jam_sekarang;
+	    }
+	    echo 'Jam Sekarang : '.$jam_sekarang_2."<br>";
+	    
+        if (in_array($jam_sekarang_2, $jamrange_array))
+          {
+          echo "Jam Kerjanya Sekarang? YA"."<br>";
+          }
+        else
+          {
+          echo "Jam Kerjanya Sekarang? BUKAN"."<br>";
+          exit;
+          }
+	}
